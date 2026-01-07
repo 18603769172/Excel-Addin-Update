@@ -1,5 +1,5 @@
 @echo off
-chcp 65001 >nul 2>&1  :: 设置编码为UTF-8，避免中文乱码
+:: 中文系统下ANSI编码保存，无需设置chcp 65001
 
 :: 定义要复制的文件和目标路径
 set "XLAM_FILE=LROOT工具箱.xlam"
@@ -7,13 +7,11 @@ set "CHM_FILE=LROOT工具箱使用说明.CHM"
 set "TARGET_DIR=%APPDATA%\Microsoft\AddIns\"
 
 echo 正在检查安装文件...
-:: 检查XLAM文件是否存在
 if not exist "%XLAM_FILE%" (
     echo 错误：未找到文件 "%XLAM_FILE%"，请确认文件与脚本在同一目录！
     pause
     exit /b 1
 )
-:: 检查CHM帮助文件是否存在
 if not exist "%CHM_FILE%" (
     echo 错误：未找到帮助文件 "%CHM_FILE%"，请确认文件与脚本在同一目录！
     pause
@@ -21,7 +19,6 @@ if not exist "%CHM_FILE%" (
 )
 
 echo 正在安装Excel工具箱（包含帮助文件）...
-:: 执行XLAM文件复制，并检查结果
 copy /Y "%XLAM_FILE%" "%TARGET_DIR%" >nul 2>&1
 if %errorlevel% neq 0 (
     echo 错误：工具箱文件复制失败，请检查权限或目标目录是否存在！
@@ -29,7 +26,6 @@ if %errorlevel% neq 0 (
     exit /b 1
 )
 
-:: 执行CHM帮助文件复制，并检查结果
 copy /Y "%CHM_FILE%" "%TARGET_DIR%" >nul 2>&1
 if %errorlevel% neq 0 (
     echo 警告：工具箱文件已安装，但帮助文件复制失败！
